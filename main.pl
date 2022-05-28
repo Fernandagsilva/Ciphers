@@ -2,10 +2,56 @@
 Autor: Fernanda Gonçalves da Silva
 Matrícula: 201765102C
 */
-:- include('db.pl') .
+:- include('charTable.pl').
 
-code(Char, Code) .    % relaciona char com seu codigo
-string2code(S, L ).     % faz o uso do predicado code para relacionar um texto com uma lista de códigos ee seus chars
+:- dynamic(cesar_cipher/2).
+:- dynamic(string2code/2).
+
+
+increase(V,C,R):- 
+    Y is C+V,
+    (Y > 187 -> R is Y - 187 ; R is Y).
+
+decrease(V,C,R):- 
+    Y is C-V,
+    (Y < 0 -> R is 187 + Y ; R is Y).
+
+encode(M, C) :- 
+    string_chars(M, X), 
+    maplist(code, X, Y),
+    maplist(increase(3), Y, C).
+
+decode(M, C) :- 
+    maplist(decrease(3), C, D),
+    maplist(code, X, D),
+    string_chars(M, X). 
+
+%  string2code(M, C) :- encode(M, C).
+ string2code(M, C) :- decode(M, C).
+ 
+%   maplist(decode, X, C), string_chars(Z, X).
+
+                    
+
+% string2code(M, C) :- maplist(cesar_cipher, X, C), string_chars(M, X).
+ % string_chars(M, X), maplist(cesar_cipher, X, C).
+
+% Message = "Deve criptograr".
+% Key = 2.
+
+% encoder(Key, Message, EMessage) :-
+%         maplist(cesar_cipher(Key), Mensagem, EMessage).        
+
+
+
+    
+
+ 
+    
+
+
+% code(Char, Code) .    % relaciona char com seu codigo
+% string2code(S, L ).     % faz o uso do predicado code para relacionar um texto com uma lista de códigos ee seus chars
 
 
 % _______________________________________________
